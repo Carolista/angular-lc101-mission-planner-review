@@ -1,5 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 
+type Item = {
+  name: string,
+  mass: number,
+}
+
 @Component({
   selector: 'app-equipment',
   templateUrl: './equipment.component.html',
@@ -22,10 +27,33 @@ export class EquipmentComponent implements OnInit {
    maximumAllowedMass: number = 2000;
    maxItems: number = 10;
 
+   budgetRemaining: number = this.maximumAllowedMass;
+   nearingMax: boolean = false;
+
+
    constructor() { }
 
    ngOnInit() { }
 
    // Code your addItem function here:
+   addItem(item: Item): void {
+    this.cargoHold.push(item);
+    this.cargoMass += item.mass;
+    if (this.cargoMass >= this.maximumAllowedMass - 200) {
+      this.nearingMax = true;
+    }
+    this.budgetRemaining -= item.mass;
+   }
+
+   shouldDisable(item: Item): boolean {
+    return this.cargoHold.length === this.maxItems || this.cargoMass + item.mass > this.maximumAllowedMass;
+   }
+
+   emptyHold(): void {
+    this.cargoHold = [];
+    this.cargoMass = 0;
+    this.budgetRemaining = this.maximumAllowedMass;
+    this.nearingMax = false;
+   }
    
 }
