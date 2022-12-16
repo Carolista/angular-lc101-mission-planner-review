@@ -1,14 +1,15 @@
 <div class="displayBox">
     <h3>Candidates</h3>
     <ul>
-        <li *ngFor="let member of candidates">{{member.name}}</li>
+        <li *ngFor="let member of candidates" [class.selected]="crew.includes(member)" (click)="addCrewMember(member)">{{member.name}}</li>
     </ul>
 </div>
 <hr>
 <div class="displayBox">
-    <h3>Crew <!-- Add a span tag here to display 'Full' when the crew reaches 3. --></h3>
+    <h3>Crew <span *ngIf="crew.length === 3">Full</span></h3>
     <ol>
-        <li *ngFor="let astronaut of crew">{{astronaut.name}}</li>
+        <li (mouseover)="selectedAstronaut = astronaut" (mouseout)="selectedAstronaut = null" *ngFor="let astronaut of crew">{{astronaut.name}}</li>
     </ol>
     <!-- Add an img tag here to display astronaut photos. -->
+    <img *ngIf="selectedAstronaut" [src]="selectedAstronaut.photo" />
 </div>
